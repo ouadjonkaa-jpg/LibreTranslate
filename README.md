@@ -14,6 +14,26 @@ Free and Open Source Machine Translation API, entirely self-hosted. Unlike other
 - [Usage Instructions](https://docs.libretranslate.com/guides/api_usage/)
 - [Community Resources](https://docs.libretranslate.com/community/resources/)
 
+## Deploy on Railway
+
+This repository includes a `Procfile` compatible with Railway:
+
+```bash
+web: libretranslate --host 0.0.0.0 --port $PORT --load-only en,fr,es --threads 2
+```
+
+Recommended Railway environment variables:
+
+- `PORT` (provided by Railway automatically)
+- `LT_UPDATE_MODELS=false`
+- `LT_FORCE_UPDATE_MODELS=false`
+
+Notes:
+
+- First startup downloads translation models and can take several minutes.
+- `--load-only en,fr,es` limits model downloads for faster deploys. Adjust as needed.
+- Use a persistent volume if you want to keep downloaded models between restarts.
+
 ## Credits
 
 This work is largely possible thanks to [Argos Translate](https://github.com/argosopentech/argos-translate), which powers the translation engine.
@@ -25,4 +45,3 @@ This work is largely possible thanks to [Argos Translate](https://github.com/arg
 ## Trademark
 
 See [Trademark Guidelines](https://github.com/LibreTranslate/LibreTranslate/blob/main/TRADEMARK.md)
-
