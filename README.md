@@ -19,7 +19,7 @@ Free and Open Source Machine Translation API, entirely self-hosted. Unlike other
 This repository includes a `Procfile` compatible with Railway:
 
 ```bash
-web: libretranslate --host 0.0.0.0 --port $PORT --load-only en,fr,es --threads 2
+web: python main.py --host 0.0.0.0 --port $PORT --load-only en,fr,es --threads 2
 ```
 
 Recommended Railway environment variables:
