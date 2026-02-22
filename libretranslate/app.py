@@ -205,40 +205,44 @@ def create_app(args):
     for lang in languages:
         language_pairs[lang.code] = sorted([l.to_lang.code for l in lang.translations_from])
 
-    # Map userdefined frontend languages to argos language object.
+    def ui_lang(code, name):
+        return type("obj", (object,), {"code": code, "name": name})
+
+    # Map user-defined frontend languages to argos language objects.
     if args.frontend_language_source == "auto":
-        frontend_argos_language_source = type(
-            "obj", (object,), {"code": "auto", "name": _("Auto Detect")}
-        )
+        frontend_argos_language_source = ui_lang("auto", _("Auto Detect"))
     else:
         frontend_argos_language_source = next(
             iter([l for l in languages if l.code == args.frontend_language_source]),
             None,
         )
-    if frontend_argos_language_source is None:
-        frontend_argos_language_source = languages[0]
+        if frontend_argos_language_source is None:
+            frontend_argos_language_source = languages[0] if languages else ui_lang("auto", _("Auto Detect"))
 
+    if languages:
+        language_target_fallback = languages[1] if len(languages) >= 2 else languages[0]
 
-    language_target_fallback = languages[1] if len(languages) >= 2 else languages[0]
+        if args.frontend_language_target == "locale":
+          def resolve_language_locale():
+              loc = get_locale()
+              language_target = next(
+                  iter([l for l in languages if l.code == loc]), None
+              )
+              if language_target is None:
+                language_target = language_target_fallback
+              return language_target
 
-    if args.frontend_language_target == "locale":
-      def resolve_language_locale():
-          loc = get_locale()
+          frontend_argos_language_target = resolve_language_locale
+        else:
           language_target = next(
-              iter([l for l in languages if l.code == loc]), None
+              iter([l for l in languages if l.code == args.frontend_language_target]), None
           )
           if language_target is None:
             language_target = language_target_fallback
-          return language_target
-
-      frontend_argos_language_target = resolve_language_locale
+          frontend_argos_language_target = lambda: language_target
     else:
-      language_target = next(
-          iter([l for l in languages if l.code == args.frontend_language_target]), None
-      )
-      if language_target is None:
-        language_target = language_target_fallback
-      frontend_argos_language_target = lambda: language_target
+        print("WARNING: no translation models are currently installed; API will return errors until models are available.")
+        frontend_argos_language_target = lambda: ui_lang("auto", _("Auto Detect"))
 
     frontend_argos_supported_files_format = []
 
