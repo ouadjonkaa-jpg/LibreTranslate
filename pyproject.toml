@@ -6,8 +6,8 @@ build-backend = "hatchling.build"
 requires-python = ">=3.8"
 name = "libretranslate"
 description = "Free and Open Source Machine Translation API. Self-hosted, no limits, no ties to proprietary services."
-readme = "README.md"
-license = { file = "LICENSE" }
+readme = { text = "LibreTranslate: Free and Open Source Machine Translation API.", content-type = "text/markdown" }
+license = { text = "GNU Affero General Public License v3" }
 authors = [
     { name = "Piero Toffanin", email = "pt@uav4geo.com" },
     { name = "LibreTranslate Authors" },
