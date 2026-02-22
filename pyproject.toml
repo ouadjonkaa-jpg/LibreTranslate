@@ -33,7 +33,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dynamic = ["version"]
+version = "1.9.3"
 
 dependencies = [
     "argos-translate-lt ==1.12.1",
@@ -119,11 +119,6 @@ python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 
 # TOOLS
-[tool.hatch.version]
-path = "VERSION"
-pattern = "^(?P<version>[0-9]*.[0-9]*.[0-9]*)$"
-
-
 [tool.pytest.ini_options]
 addopts = [
     "-v",
